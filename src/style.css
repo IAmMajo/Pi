@@ -1,0 +1,21 @@
+body {
+  text-align: center;
+  margin: 0 8px;
+}
+
+@media (min-width: 600px) and (orientation: portrait) {
+  body {
+    margin: 0 12px;
+  }
+}
+
+@media (min-width: 840px) and (orientation: portrait), (min-width: 916px) {
+  html {
+    max-width: 1224px;
+    margin: auto;
+  }
+
+  body {
+    margin: 0 32px;
+  }
+}
