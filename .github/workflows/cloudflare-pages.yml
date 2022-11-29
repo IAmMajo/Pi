@@ -1,0 +1,28 @@
+name: Cloudflare Pages
+
+permissions:
+  contents: read
+  deployments: write
+
+on: push
+
+concurrency:
+  group: cloudflare-pages
+  cancel-in-progress: true
+
+jobs:
+  cloudflare-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: volta-cli/action@v3
+      - run: |
+          npm ci
+          npm run build
+      - uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 9839aabb4253ed85d80549a8f99ee832
+          projectName: pi
+          directory: dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
