@@ -1,6 +1,8 @@
+import "@fontsource/roboto/latin-500.css";
 import "@fontsource/roboto/400.css";
 import "./theme/theme.css";
 import "@material/web/button/outlined-button";
+import "@loadingio/css-spinner/entries/ring/index.css";
 import "./style.css";
 import { ExactNumber, sqrt } from "exactnumber";
 
@@ -8,7 +10,10 @@ const decimalPlaces = document.getElementById("decimal-places")!;
 let k = 0n;
 let result = ExactNumber(0);
 let precision = 14;
-while (k < 100) {
+
+chudnovsky();
+
+function chudnovsky() {
   result = result.add(
     ExactNumber(
       (-1n) ** k * factorial(6n * k) * (545_140_134n * k + 13_591_409n),
@@ -16,7 +21,7 @@ while (k < 100) {
     )
   );
   const pi = ExactNumber(426880)
-    .mul(sqrt(10005, precision / 2 + 5))
+    .mul(sqrt(10005, precision))
     .div(result)
     .toPrecision(precision);
   for (let i = precision - 14; i < precision; i++) {
@@ -29,6 +34,7 @@ while (k < 100) {
   }
   k++;
   precision += 14;
+  setTimeout(chudnovsky);
 }
 
 function factorial(number: bigint) {
