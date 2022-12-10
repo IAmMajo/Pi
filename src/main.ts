@@ -20,7 +20,7 @@ worker.addEventListener("error", () => {
   message.textContent =
     "Ihr Browser kann mit der aktuell zur Berechnung von Pi verwendeten " +
     "Methode keine weiteren Nachkommastellen berechnen. Benutzen Sie einen " +
-    "Chromium-basierten Browser (beispielsweise die nicht-iOS-Versionen von " +
+    "Chromium-basierten Browser (beispielsweise die Nicht-iOS-Versionen von " +
     "Chrome, Edge oder Opera), um am meisten Nachkommastellen berechnen zu " +
     "können.";
   document.querySelector(".lds-ring")!.replaceWith(message);
