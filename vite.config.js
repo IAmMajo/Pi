@@ -5,7 +5,7 @@ export default defineConfig({
     target: [
       "chrome67",
       "edge79",
-      "safari24",
+      "safari14",
       "firefox68",
       "opera54",
       "ios14",
