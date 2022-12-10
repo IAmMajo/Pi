@@ -1,11 +1,19 @@
 body {
   text-align: center;
-  margin: 0 8px;
+  margin: 8px;
+}
+
+a {
+  text-decoration-line: none;
+}
+
+#decimal-places :nth-child(8n)::after {
+  content: " ";
 }
 
 @media (min-width: 600px) and (orientation: portrait) {
   body {
-    margin: 0 12px;
+    margin: 12px;
   }
 }
 
@@ -16,6 +24,6 @@ body {
   }
 
   body {
-    margin: 0 32px;
+    margin: 32px;
   }
 }
