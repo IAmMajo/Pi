@@ -14,7 +14,7 @@ while (true) {
     .mul(sqrt(10005, precision))
     .div(result)
     .toPrecision(precision)
-    .substring(Math.max(2, precision - 14), precision);
+    .substring(Math.max(2, precision - 13));
   for (const decimalPlace of decimalPlaces) {
     postMessage(decimalPlace);
   }
