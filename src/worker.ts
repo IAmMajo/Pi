@@ -3,7 +3,6 @@ import { ExactNumber, sqrt } from "exactnumber";
 let k = 0n;
 let result = ExactNumber(0);
 let precision = 14;
-
 while (true) {
   result = result.add(
     ExactNumber(
@@ -11,12 +10,13 @@ while (true) {
       factorial(3n * k) * factorial(k) ** 3n * 640_320n ** (3n * k)
     )
   );
-  const pi = ExactNumber(426880)
+  const decimalPlaces = ExactNumber(426880)
     .mul(sqrt(10005, precision))
     .div(result)
-    .toPrecision(precision);
-  for (let i = Math.max(2, precision - 14); i < precision; i++) {
-    postMessage(pi.charAt(i));
+    .toPrecision(precision)
+    .substring(Math.max(2, precision - 13));
+  for (const decimalPlace of decimalPlaces) {
+    postMessage(decimalPlace);
   }
   k++;
   precision += 14;
