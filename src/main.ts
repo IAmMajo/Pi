@@ -1,7 +1,7 @@
 import "@fontsource/roboto/latin-500.css";
 import "@fontsource/roboto/400.css";
 import "./theme/theme.css";
-import "@material/web/button/outlined-button";
+import "@material/web/button/outlined-link-button";
 import "@loadingio/css-spinner/entries/ring/index.css";
 import "./style.css";
 
