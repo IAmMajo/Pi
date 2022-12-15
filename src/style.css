@@ -1,29 +1,39 @@
+html {
+  --margin: 8px;
+}
+
 body {
   text-align: center;
-  margin: 8px;
+  margin: var(--margin);
+  margin-bottom: 115px;
 }
 
 a {
   text-decoration-line: none;
 }
 
-#decimal-places :nth-child(8n)::after {
-  content: " ";
+#info {
+  position: fixed;
+  bottom: var(--margin);
+  left: var(--margin);
+  right: var(--margin);
+  border-radius: 4px;
+  max-width: 900px;
+  margin: auto;
+  text-align: left;
+  padding: 16px;
 }
 
 @media (min-width: 600px) and (orientation: portrait) {
-  body {
-    margin: 12px;
+  html {
+    --margin: 12px;
   }
 }
 
 @media (min-width: 840px) and (orientation: portrait), (min-width: 916px) {
   html {
+    --margin: 32px;
     max-width: 1224px;
     margin: auto;
-  }
-
-  body {
-    margin: 32px;
   }
 }

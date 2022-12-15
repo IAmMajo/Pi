@@ -2,17 +2,22 @@ import "@fontsource/roboto/latin-500.css";
 import "@fontsource/roboto/400.css";
 import "./theme/theme.css";
 import "@material/web/button/outlined-link-button";
+import "@material/web/button/text-button";
 import "@loadingio/css-spinner/entries/ring/index.css";
 import "./style.css";
+import { MdTextButton } from "@material/web/button/text-button";
 
-const decimalPlaces = document.getElementById("decimal-places")!;
 const worker = new Worker(new URL("worker.ts", import.meta.url), {
   type: "module",
 });
+const decimalPlaces = document.getElementById("decimal-places")!;
+let number = 1;
 worker.addEventListener("message", (event: MessageEvent<string>) => {
-  const span = document.createElement("span");
-  span.innerText = event.data;
-  decimalPlaces.append(span);
+  const button = document.createElement("md-text-button");
+  button.label = event.data;
+  button.dataset.number = number.toLocaleString("de");
+  decimalPlaces.appendChild(button);
+  number++;
 });
 worker.addEventListener("error", () => {
   const message = document.createElement("p");
@@ -24,4 +29,17 @@ worker.addEventListener("error", () => {
     "Chrome, Edge oder Opera), um am meisten Nachkommastellen berechnen zu " +
     "können.";
   document.querySelector(".lds-ring")!.replaceWith(message);
+});
+decimalPlaces.addEventListener("click", (event) => {
+  const { target } = event;
+  if (!(target instanceof MdTextButton)) {
+    return;
+  }
+  document.getElementById("info")?.remove();
+  const info = document.createElement("p");
+  info.id = "info";
+  info.classList.add("inverse-surface", "inverse-on-surface-text");
+  info.textContent = `Nachkommastelle ${target.dataset.number} von Pi`;
+  document.body.appendChild(info);
+  setTimeout(() => info.remove(), 3000);
 });
