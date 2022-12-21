@@ -11,7 +11,7 @@ while (true) {
     )
   );
   const decimalPlaces = ExactNumber(426880)
-    .mul(sqrt(10005, precision + 4))
+    .mul(sqrt(10005, precision + 5))
     .div(result)
     .toPrecision(precision)
     .substring(Math.max(2, precision - 13));
