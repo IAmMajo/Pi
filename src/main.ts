@@ -1,10 +1,10 @@
-import "@fontsource/roboto/latin-500.css";
 import "@fontsource/roboto/400.css";
-import "./theme/theme.css";
-import "@material/web/button/outlined-link-button";
+import "@fontsource/roboto/latin-500.css";
 import "@loadingio/css-spinner/entries/ring/index.css";
-import "./style.css";
+import "@material/web/button/outlined-link-button";
 import { MdTextButton } from "@material/web/button/text-button";
+import "./style.css";
+import "./theme/theme.css";
 
 const worker = new Worker(new URL("worker.ts", import.meta.url), {
   type: "module",
