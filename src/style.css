@@ -8,10 +8,6 @@ body {
   margin-bottom: 115px;
 }
 
-a {
-  text-decoration-line: none;
-}
-
 #info {
   position: fixed;
   bottom: var(--margin);
