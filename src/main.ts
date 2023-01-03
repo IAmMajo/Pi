@@ -9,12 +9,36 @@ import "./theme/theme.css";
 const worker = new Worker(new URL("worker.ts", import.meta.url), {
   type: "module",
 });
+const start = performance.now();
 const decimalPlaces = document.getElementById("decimal-places")!;
 let number = 1;
 worker.addEventListener("message", (event: MessageEvent<string>) => {
   const button = document.createElement("md-text-button");
   button.label = event.data;
-  button.dataset.number = number.toLocaleString("de");
+  const seconds = (performance.now() - start) / 1000;
+  const displayedSeconds = seconds % 60;
+  const minutes = Math.trunc(seconds / 60);
+  let time = displayedSeconds.toLocaleString("de");
+  let unit = "Sekunden";
+  if (minutes) {
+    if (displayedSeconds < 10) {
+      time = `0${time}`;
+    }
+    const displayedMinutes = minutes % 60;
+    time = `${displayedMinutes}:${time}`;
+    unit = "Minuten";
+    const hours = Math.trunc(minutes / 60);
+    if (hours) {
+      if (displayedMinutes < 10) {
+        time = `0${time}`;
+      }
+      time = `${hours}:${time}`;
+      unit = "Stunden";
+    }
+  }
+  button.dataset.message = `Nachkommastelle ${number.toLocaleString(
+    "de"
+  )} – generiert in ${time} ${unit}`;
   decimalPlaces.appendChild(button);
   number++;
 });
@@ -38,7 +62,7 @@ decimalPlaces.addEventListener("click", (event) => {
   const info = document.createElement("p");
   info.id = "info";
   info.classList.add("inverse-surface", "inverse-on-surface-text");
-  info.textContent = `Nachkommastelle ${target.dataset.number} von Pi`;
+  info.textContent = target.dataset.message!;
   document.body.appendChild(info);
   setTimeout(() => info.remove(), 3000);
 });
