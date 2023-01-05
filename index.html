@@ -8,22 +8,29 @@
     <meta name="color-scheme" content="light dark" />
   </head>
   <body class="surface on-surface-text body-large">
-    <md-outlined-link-button
-      label="Quellcode"
-      href="https://github.com/IAmMajo/Pi"
-    >
-    </md-outlined-link-button>
-    <p>
-      <span class="display-large">π = 3,</span>
-      <br />
-      <span id="decimal-places"></span>
-    </p>
-    <div class="lds-ring primary-text">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
+    <header class="surface">
+      <div id="header-content">
+        <h1 class="title-large">Pi</h1>
+        <md-standard-link-icon-button
+          icon="code"
+          linkHref="https://github.com/IAmMajo/Pi"
+        >
+        </md-standard-link-icon-button>
+      </div>
+    </header>
+    <main>
+      <p>
+        <span class="display-large">π = 3,</span>
+        <br />
+        <span id="decimal-places"></span>
+      </p>
+      <div class="lds-ring primary-text">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

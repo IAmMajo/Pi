@@ -1,8 +1,9 @@
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/latin-500.css";
 import "@loadingio/css-spinner/entries/ring/index.css";
-import "@material/web/button/outlined-link-button";
 import { MdTextButton } from "@material/web/button/text-button";
+import "@material/web/iconbutton/standard-link-icon-button";
+import 'material-symbols/outlined.css';
 import "./style.css";
 import "./theme/theme.css";
 
@@ -53,6 +54,14 @@ worker.addEventListener("error", () => {
     "können.";
   document.querySelector(".lds-ring")!.replaceWith(message);
 });
+const headerClasses = document.querySelector("header")!.classList;
+document.addEventListener("scroll", () => {
+  if (window.scrollY > 0) {
+    headerClasses.add("elevated");
+    return;
+  }
+  headerClasses.remove("elevated");
+})
 decimalPlaces.addEventListener("click", (event) => {
   const { target } = event;
   if (!(target instanceof MdTextButton)) {
