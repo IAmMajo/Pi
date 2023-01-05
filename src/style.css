@@ -8,7 +8,9 @@ body {
 }
 
 header {
+  display: flex;
   height: 64px;
+  align-items: center;
   padding: 0 4px 0 16px;
   position: sticky;
   top: 0;
@@ -24,12 +26,6 @@ header {
   height: 100%;
   background-color: var(--md-sys-color-surface-tint);
   opacity: 0.08;
-}
-
-#header-content {
-  display: flex;
-  height: 100%;
-  align-items: center;
 }
 
 h1 {
