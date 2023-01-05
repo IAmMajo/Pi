@@ -53,6 +53,12 @@ p {
   padding: 16px;
 }
 
+md-text-button {
+  contain: strict;
+  contain-intrinsic-size: 64px 48px;
+  content-visibility: auto;
+}
+
 @media (min-width: 600px) and (orientation: portrait) {
   html {
     --margin: 12px;
