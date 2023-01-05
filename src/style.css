@@ -46,7 +46,6 @@ p {
 md-text-button {
   contain: strict;
   contain-intrinsic-size: 64px 40px;
-  content-visibility: auto;
 }
 
 #info {
