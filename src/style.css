@@ -43,6 +43,12 @@ p {
   margin: auto;
 }
 
+md-text-button {
+  contain: strict;
+  contain-intrinsic-size: 64px 40px;
+  content-visibility: auto;
+}
+
 #info {
   position: fixed;
   bottom: var(--margin);
@@ -51,12 +57,6 @@ p {
   border-radius: 4px;
   max-width: 900px;
   padding: 16px;
-}
-
-md-text-button {
-  contain: strict;
-  contain-intrinsic-size: 64px 48px;
-  content-visibility: auto;
 }
 
 @media (min-width: 600px) and (orientation: portrait) {
