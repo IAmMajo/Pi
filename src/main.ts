@@ -1,12 +1,36 @@
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/latin-500.css";
 import "@loadingio/css-spinner/entries/ring/index.css";
+import "@material/web/button/text-button";
 import { MdTextButton } from "@material/web/button/text-button";
+import "@material/web/iconbutton/standard-icon-button";
 import "@material/web/iconbutton/standard-link-icon-button";
-import 'material-symbols/outlined.css';
+import "@material/web/list/list-item-icon";
+import "@material/web/menu/menu";
+import "@material/web/menu/menu-button";
+import "@material/web/menu/menu-item";
+import { MdMenuItem } from "@material/web/menu/menu-item";
+import "material-symbols/outlined.css";
 import "./style.css";
 import "./theme/theme.css";
 
+const body = document.body;
+const mode = localStorage.getItem("mode");
+const bodyClassList = body.classList;
+const colorScheme = document.querySelector<HTMLMetaElement>(
+  'meta[name="color-scheme"]'
+)!;
+const defaultModeClassList = document.querySelector(
+  `#mode md-list-item-icon`
+)!.classList;
+if (mode) {
+  bodyClassList.add(mode);
+  colorScheme.content = mode;
+  defaultModeClassList.add("hidden");
+  document
+    .querySelector(`#mode [data-value="${mode}"] md-list-item-icon`)!
+    .classList.remove("hidden");
+}
 const worker = new Worker(new URL("worker.ts", import.meta.url), {
   type: "module",
 });
@@ -61,7 +85,32 @@ document.addEventListener("scroll", () => {
     return;
   }
   headerClasses.remove("elevated");
-})
+});
+document.querySelectorAll<MdMenuItem>("#mode md-menu-item").forEach((item) =>
+  item.addEventListener("click", () => {
+    const oldMode = localStorage.getItem("mode");
+    if (oldMode) {
+      bodyClassList.remove(oldMode);
+      document
+        .querySelector(`#mode [data-value="${oldMode}"] md-list-item-icon`)!
+        .classList.add("hidden");
+    }
+    const newMode = item.dataset.value;
+    if (!newMode) {
+      localStorage.removeItem("mode");
+      colorScheme.content = "light dark";
+      defaultModeClassList.remove("hidden");
+      return;
+    }
+    localStorage.setItem("mode", newMode);
+    bodyClassList.add(newMode);
+    colorScheme.content = newMode;
+    defaultModeClassList.add("hidden");
+    document
+      .querySelector(`#mode [data-value="${newMode}"] md-list-item-icon`)!
+      .classList.remove("hidden");
+  })
+);
 decimalPlaces.addEventListener("click", (event) => {
   const { target } = event;
   if (!(target instanceof MdTextButton)) {
@@ -72,6 +121,25 @@ decimalPlaces.addEventListener("click", (event) => {
   info.id = "info";
   info.classList.add("inverse-surface", "inverse-on-surface-text");
   info.textContent = target.dataset.message!;
-  document.body.appendChild(info);
+  body.appendChild(info);
   setTimeout(() => info.remove(), 3000);
+});
+
+addEventListener("load", () => {
+  document.querySelectorAll("md-list-item-icon").forEach((icon) => {
+    const style = document.createElement("style");
+    style.textContent =
+      '.md3-list-item__icon { font-family: "Material Symbols Outlined" ' +
+      "!important; }";
+    icon.shadowRoot!.append(style);
+  });
+  document.querySelectorAll("md-menu").forEach((menu) => {
+    const style = document.createElement("style");
+    style.textContent =
+      ".md3-menu-surface { width: 280px !important; overflow: hidden " +
+      "!important; border-radius: 4px !important; }";
+    menu
+      .shadowRoot!.querySelector("md-menu-surface")!
+      .shadowRoot!.append(style);
+  });
 });

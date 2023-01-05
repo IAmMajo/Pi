@@ -10,12 +10,33 @@
   <body class="surface on-surface-text body-large">
     <header class="surface">
       <h1 class="title-large">Pi</h1>
+      <md-menu-button>
+        <md-standard-icon-button
+          slot="button"
+          icon="palette"
+          aria-label="Modus"
+        ></md-standard-icon-button>
+        <md-menu slot="menu" id="mode">
+          <md-menu-item headline="Systemeinstellung">
+            <md-list-item-icon slot="start">check</md-list-item-icon>
+          </md-menu-item>
+          <md-menu-item headline="Hell" data-value="light">
+            <md-list-item-icon slot="start" class="hidden">
+              check
+            </md-list-item-icon>
+          </md-menu-item>
+          <md-menu-item headline="Dunkel" data-value="dark">
+            <md-list-item-icon slot="start" class="hidden">
+              check
+            </md-list-item-icon>
+          </md-menu-item>
+        </md-menu>
+      </md-menu-button>
       <md-standard-link-icon-button
         icon="code"
         linkHref="https://github.com/IAmMajo/Pi"
         aria-label="Quellcode"
-      >
-      </md-standard-link-icon-button>
+      ></md-standard-link-icon-button>
     </header>
     <main>
       <p>
