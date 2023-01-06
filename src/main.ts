@@ -57,8 +57,16 @@ document
   .querySelectorAll<MdMenuItem>("#implementation md-menu-item")
   .forEach((item) =>
     item.addEventListener("click", () => {
-      const newImplementation = item.dataset.value;
       const oldImplementation = localStorage.getItem("implementation");
+      if (oldImplementation) {
+        document
+          .querySelector(
+            `#implementation [data-value="${oldImplementation}"] ` +
+              "md-list-item-icon"
+          )!
+          .classList.add("hidden");
+      }
+      const newImplementation = item.dataset.value;
       if (newImplementation) {
         localStorage.setItem("implementation", newImplementation);
         defaultImplementationClasses.add("hidden");
@@ -71,14 +79,6 @@ document
       } else {
         localStorage.removeItem("implementation");
         defaultImplementationClasses.remove("hidden");
-      }
-      if (oldImplementation) {
-        document
-          .querySelector(
-            `#implementation [data-value="${oldImplementation}"] ` +
-              "md-list-item-icon"
-          )!
-          .classList.add("hidden");
       }
       worker.terminate();
       const error = document.querySelector(".error-text");
