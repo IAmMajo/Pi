@@ -16,68 +16,34 @@ import "./theme/theme.css";
 
 const body = document.body;
 const mode = localStorage.getItem("mode");
-const bodyClassList = body.classList;
+const bodyClasses = body.classList;
 const colorScheme = document.querySelector<HTMLMetaElement>(
   'meta[name="color-scheme"]'
 )!;
-const defaultModeClassList = document.querySelector(
+const defaultModeClasses = document.querySelector(
   `#mode md-list-item-icon`
 )!.classList;
 if (mode) {
-  bodyClassList.add(mode);
+  bodyClasses.add(mode);
   colorScheme.content = mode;
-  defaultModeClassList.add("hidden");
+  defaultModeClasses.add("hidden");
   document
     .querySelector(`#mode [data-value="${mode}"] md-list-item-icon`)!
     .classList.remove("hidden");
 }
-const worker = new Worker(new URL("worker.ts", import.meta.url), {
-  type: "module",
-});
-const start = performance.now();
-const decimalPlaces = document.getElementById("decimal-places")!;
-let number = 1;
-worker.addEventListener("message", (event: MessageEvent<string>) => {
-  const button = document.createElement("md-text-button");
-  button.label = event.data;
-  const seconds = (performance.now() - start) / 1000;
-  const displayedSeconds = seconds % 60;
-  const minutes = Math.trunc(seconds / 60);
-  let time = displayedSeconds.toLocaleString("de");
-  let unit = "Sekunden";
-  if (minutes) {
-    if (displayedSeconds < 10) {
-      time = `0${time}`;
-    }
-    const displayedMinutes = minutes % 60;
-    time = `${displayedMinutes}:${time}`;
-    unit = "Minuten";
-    const hours = Math.trunc(minutes / 60);
-    if (hours) {
-      if (displayedMinutes < 10) {
-        time = `0${time}`;
-      }
-      time = `${hours}:${time}`;
-      unit = "Stunden";
-    }
-  }
-  button.dataset.message = `Nachkommastelle ${number.toLocaleString(
-    "de"
-  )} – generiert in ${time} ${unit}`;
-  decimalPlaces.appendChild(button);
-  number++;
-});
-worker.addEventListener("error", () => {
-  const message = document.createElement("p");
-  message.classList.add("error-text");
-  message.textContent =
-    "Ihr Browser kann mit der aktuell zur Berechnung von Pi verwendeten " +
-    "Methode keine weiteren Nachkommastellen berechnen. Benutzen Sie einen " +
-    "Chromium-basierten Browser (beispielsweise die Nicht-iOS-Versionen von " +
-    "Chrome, Edge oder Opera), um am meisten Nachkommastellen berechnen zu " +
-    "können.";
-  document.querySelector(".lds-ring")!.replaceWith(message);
-});
+const implementation = localStorage.getItem("implementation");
+const defaultImplementationClasses = document.querySelector(
+  `#implementation md-list-item-icon`
+)!.classList;
+if (implementation) {
+  defaultImplementationClasses.add("hidden");
+  document
+    .querySelector(
+      `#implementation [data-value="${implementation}"] md-list-item-icon`
+    )!
+    .classList.remove("hidden");
+}
+let worker = createWorker();
 const headerClasses = document.querySelector("header")!.classList;
 document.addEventListener("scroll", () => {
   if (window.scrollY > 0) {
@@ -86,11 +52,52 @@ document.addEventListener("scroll", () => {
   }
   headerClasses.remove("elevated");
 });
+const decimalPlaces = document.getElementById("decimal-places")!;
+document
+  .querySelectorAll<MdMenuItem>("#implementation md-menu-item")
+  .forEach((item) =>
+    item.addEventListener("click", () => {
+      const newImplementation = item.dataset.value;
+      const oldImplementation = localStorage.getItem("implementation");
+      if (newImplementation) {
+        localStorage.setItem("implementation", newImplementation);
+        defaultImplementationClasses.add("hidden");
+        document
+          .querySelector(
+            `#implementation [data-value="${newImplementation}"] ` +
+              "md-list-item-icon"
+          )!
+          .classList.remove("hidden");
+      } else {
+        localStorage.removeItem("implementation");
+        defaultImplementationClasses.remove("hidden");
+      }
+      if (oldImplementation) {
+        document
+          .querySelector(
+            `#implementation [data-value="${oldImplementation}"] ` +
+              "md-list-item-icon"
+          )!
+          .classList.add("hidden");
+      }
+      worker.terminate();
+      const error = document.querySelector(".error-text");
+      if (error) {
+        const spinner = document.createElement("div");
+        spinner.classList.add("lds-ring", "primary-text");
+        const div = document.createElement("div");
+        spinner.append(div, div.cloneNode(), div.cloneNode(), div.cloneNode());
+        error.replaceWith(spinner);
+      }
+      decimalPlaces.replaceChildren();
+      worker = createWorker();
+    })
+  );
 document.querySelectorAll<MdMenuItem>("#mode md-menu-item").forEach((item) =>
   item.addEventListener("click", () => {
     const oldMode = localStorage.getItem("mode");
     if (oldMode) {
-      bodyClassList.remove(oldMode);
+      bodyClasses.remove(oldMode);
       document
         .querySelector(`#mode [data-value="${oldMode}"] md-list-item-icon`)!
         .classList.add("hidden");
@@ -99,13 +106,13 @@ document.querySelectorAll<MdMenuItem>("#mode md-menu-item").forEach((item) =>
     if (!newMode) {
       localStorage.removeItem("mode");
       colorScheme.content = "light dark";
-      defaultModeClassList.remove("hidden");
+      defaultModeClasses.remove("hidden");
       return;
     }
     localStorage.setItem("mode", newMode);
-    bodyClassList.add(newMode);
+    bodyClasses.add(newMode);
     colorScheme.content = newMode;
-    defaultModeClassList.add("hidden");
+    defaultModeClasses.add("hidden");
     document
       .querySelector(`#mode [data-value="${newMode}"] md-list-item-icon`)!
       .classList.remove("hidden");
@@ -143,3 +150,71 @@ addEventListener("load", () => {
       .shadowRoot!.append(style);
   });
 });
+
+function createWorker() {
+  let newWorker = null;
+  switch (localStorage.getItem("implementation")) {
+    case "optimised-faculty-calculation":
+      newWorker = new Worker(
+        new URL(
+          "implementations/optimised-faculty-calculation.worker.ts",
+          import.meta.url
+        ),
+        {
+          type: "module",
+        }
+      );
+      break;
+    default:
+      newWorker = new Worker(
+        new URL("implementations/unoptimised.worker.ts", import.meta.url),
+        {
+          type: "module",
+        }
+      );
+  }
+  const start = performance.now();
+  let number = 1;
+  newWorker.addEventListener("message", (event: MessageEvent<string>) => {
+    const button = document.createElement("md-text-button");
+    button.label = event.data;
+    const seconds = (performance.now() - start) / 1000;
+    const displayedSeconds = seconds % 60;
+    const minutes = Math.trunc(seconds / 60);
+    let time = displayedSeconds.toLocaleString("de");
+    let unit = "Sekunden";
+    if (minutes) {
+      if (displayedSeconds < 10) {
+        time = `0${time}`;
+      }
+      const displayedMinutes = minutes % 60;
+      time = `${displayedMinutes}:${time}`;
+      unit = "Minuten";
+      const hours = Math.trunc(minutes / 60);
+      if (hours) {
+        if (displayedMinutes < 10) {
+          time = `0${time}`;
+        }
+        time = `${hours}:${time}`;
+        unit = "Stunden";
+      }
+    }
+    button.dataset.message = `Nachkommastelle ${number.toLocaleString(
+      "de"
+    )} – generiert in ${time} ${unit}`;
+    decimalPlaces.appendChild(button);
+    number++;
+  });
+  newWorker.addEventListener("error", () => {
+    const error = document.createElement("p");
+    error.classList.add("error-text");
+    error.textContent =
+      "Ihr Browser kann mit der aktuell zur Berechnung von Pi verwendeten " +
+      "Methode keine weiteren Nachkommastellen berechnen. Benutzen Sie " +
+      "einen Chromium-basierten Browser (beispielsweise die " +
+      "Nicht-iOS-Versionen von Chrome, Edge oder Opera), um am meisten " +
+      "Nachkommastellen berechnen zu können.";
+    document.querySelector(".lds-ring")!.replaceWith(error);
+  });
+  return newWorker;
+}
