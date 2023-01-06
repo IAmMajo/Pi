@@ -10,7 +10,7 @@ import "@material/web/menu/menu";
 import "@material/web/menu/menu-button";
 import "@material/web/menu/menu-item";
 import { MdMenuItem } from "@material/web/menu/menu-item";
-import 'material-icons/iconfont/outlined.css';
+import "material-icons/iconfont/outlined.css";
 import "./style.css";
 import "./theme/theme.css";
 
