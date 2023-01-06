@@ -1,19 +1,12 @@
 body {
-  --md-icon-font: "Material Symbols Outlined";
+  --md-icon-font: "Material Icons Outlined";
   --md-ripple-focus-state-layer-color: var(--md-sys-color-on-surface-variant);
   --md-ripple-focus-state-layer-opacity: 0.08;
   --md-ripple-hover-state-layer-color: var(--md-sys-color-on-surface-variant);
   --md-ripple-pressed-state-layer-color: var(--md-sys-color-on-surface-variant);
   --margin: 8px;
-}
-
-body {
   overflow-y: scroll;
   margin: 0;
-}
-
-md-menu {
-  width: 50px;
 }
 
 header {

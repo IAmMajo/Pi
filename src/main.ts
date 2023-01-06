@@ -10,7 +10,7 @@ import "@material/web/menu/menu";
 import "@material/web/menu/menu-button";
 import "@material/web/menu/menu-item";
 import { MdMenuItem } from "@material/web/menu/menu-item";
-import "material-symbols/outlined.css";
+import 'material-icons/iconfont/outlined.css';
 import "./style.css";
 import "./theme/theme.css";
 
@@ -136,14 +136,14 @@ addEventListener("load", () => {
   document.querySelectorAll("md-list-item-icon").forEach((icon) => {
     const style = document.createElement("style");
     style.textContent =
-      '.md3-list-item__icon { font-family: "Material Symbols Outlined" ' +
+      '.md3-list-item__icon { font-family: "Material Icons Outlined" ' +
       "!important; }";
     icon.shadowRoot!.append(style);
   });
   document.querySelectorAll("md-menu").forEach((menu) => {
     const style = document.createElement("style");
     style.textContent =
-      ".md3-menu-surface { width: 280px !important; overflow: hidden " +
+      ".md3-menu-surface { width: 280px !important; overflow-x: hidden " +
       "!important; border-radius: 4px !important; }";
     menu
       .shadowRoot!.querySelector("md-menu-surface")!

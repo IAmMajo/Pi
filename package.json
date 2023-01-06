@@ -23,6 +23,6 @@
     "@loadingio/css-spinner": "^2.0.2",
     "@material/web": "^0.1.0-alpha.2",
     "exactnumber": "^1.0.1",
-    "material-symbols": "^0.4.2"
+    "material-icons": "^1.13.1"
   }
 }
