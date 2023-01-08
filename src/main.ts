@@ -154,10 +154,10 @@ addEventListener("load", () => {
 function createWorker() {
   let newWorker = null;
   switch (localStorage.getItem("implementation")) {
-    case "optimised-faculty-calculation":
+    case "other-faculty-calculation":
       newWorker = new Worker(
         new URL(
-          "implementations/optimised-faculty-calculation.worker.ts",
+          "implementations/other-faculty-calculation.worker.ts",
           import.meta.url
         ),
         {
@@ -167,7 +167,7 @@ function createWorker() {
       break;
     default:
       newWorker = new Worker(
-        new URL("implementations/unoptimised.worker.ts", import.meta.url),
+        new URL("implementations/standard.worker.ts", import.meta.url),
         {
           type: "module",
         }
